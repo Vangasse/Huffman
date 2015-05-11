@@ -1,12 +1,34 @@
 #include "filemanager.h"
 #include <cstring>
 #include <QFile>
-#include <QTextStream>
 #include <QString>
 
+
+int *FileManager::getMarray() const
+{
+    return marray;
+}
+
+void FileManager::setMarray(int *value)
+{
+    marray = value;
+}
+
+QByteArray FileManager::getFinalFile() const
+{
+    return finalFile;
+}
+
+void FileManager::setFinalFile(const QByteArray &value)
+{
+    finalFile = value;
+}
 FileManager::FileManager()
 {
-    memset(marray, 0, 256); //TESTE marray[] = {0};
+    marray = new int[256];
+    for(int i = 0; i < 256; i++){
+        marray[i] = 0;
+    }
 }
 
 FileManager::~FileManager()
@@ -21,6 +43,7 @@ void FileManager::receiveFile(QString fileName){
 
     while (!file.atEnd()) {
         QByteArray line = file.readLine(1024);
+        finalFile += line;
         charFrequence(line);
     }
     file.close();
