@@ -34,5 +34,7 @@ int main(/*int argc, char *argv[]*/)
         qDebug() << list.at(i)->getValue() << ' ' << list.at(i)->getNumber();
     }
 
+    huffman->encodeFile(businesMan->getRoot());
+
     return 0;//app.exec();
 }

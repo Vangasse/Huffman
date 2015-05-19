@@ -74,28 +74,53 @@ void FileManager::charList(){
     }
 }
 
-void FileManager::encodeFile(Node *cursor, unsigned char c){
+bool FileManager::encodeFile(Node *cursor, unsigned char c, bool found){
     Node *aux;
     if(cursor->isLeaf()){
-        if(cursor->getValue() != c)
-            hash[c].remove(hash[c].size() - 1);
-        return;
+        if(cursor->getValue() != c){
+            hash[c].remove(hash[c].size() - 1, hash[c].size() - 1);
+            return false;
+        }
+        else{
+            return true;
+        }
     }
     else{
         aux = cursor->getLeft();
         hash[c] += "0";
-        encodeFile(aux, c);
-        aux = cursor->getRight();
-        hash[c] += "1";
-        encodeFile(aux, c);
+        found = encodeFile(aux, c, false);
+        if(!(found)){
+            aux = cursor->getRight();
+            hash[c] += "1";
+            found = encodeFile(aux, c, false);
+        }
     }
 
+    if(!(found)){
+        if(hash[c].size() == 1)
+            hash[c] = "";
+        else
+            hash[c].remove(hash[c].size() - 1, hash[c].size() - 1);
+    }
+
+    return found;
+
+}
+
+void printTree(Node* root){
+    if(root->isLeaf()){
+        qDebug() << ">>" << root->getValue() << ' ' << root->getNumber();
+        return;
+    }
+    printTree(root->getLeft());
+    printTree(root->getRight());
 }
 
 void FileManager::encodeFile(Node *root){
     for(int i = 0; i < list.size(); i++){
         unsigned char c = list.at(i)->getValue();
-        encodeFile(root, c);
-        qDebug() << hash[c];
+        encodeFile(root, c, false);
+        qDebug() << hash[c] << ' ' << c << ' ' << list.at(i)->getNumber();
     }
+    printTree(root);
 }

@@ -24,7 +24,7 @@ public:
     void receiveFile(QString fileName);
     void charList();
     void encodeFile(Node *root);
-    void encodeFile(Node *cursor, unsigned char c);
+    bool encodeFile(Node *cursor, unsigned char c, bool found);
     int *getMarray() const;
     void setMarray(int *value);
     QByteArray getFinalFile() const;
