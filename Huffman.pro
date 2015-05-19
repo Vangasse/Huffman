@@ -17,7 +17,11 @@ TEMPLATE = app
 
 SOURCES += \
     filemanager.cpp \
-    main.cpp
+    main.cpp \
+    node.cpp \
+    environmentalist.cpp
 
 HEADERS += \
-    filemanager.h
+    filemanager.h \
+    node.h \
+    environmentalist.h
