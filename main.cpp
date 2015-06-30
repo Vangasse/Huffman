@@ -35,6 +35,21 @@ int main(/*int argc, char *argv[]*/)
     }
 
     huffman->encodeFile(businesMan->getRoot());
+    
+    businesMan->encodeTree();
+
+    qDebug() << businesMan->getEncodedTree() << endl;
+
+    huffman->encodeCompleteFile(businesMan->getEncodedTree().size());
+
+    qDebug() << huffman->getEncodedTrash();
+    qDebug() << huffman->getEncodedTreeSize();
+    qDebug() << huffman->getEncodedNameSize();
+    qDebug() << huffman->getFileNameSav();
+    qDebug() << businesMan->getEncodedTree();
+    qDebug() << huffman->getEncodedFinalFile();
+
+    huffman->createHuffFile(businesMan->getEncodedTree());
 
     return 0;//app.exec();
 }

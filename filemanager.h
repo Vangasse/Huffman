@@ -7,6 +7,9 @@
 #include <QList>
 #include <QtAlgorithms>
 #include <QDebug>
+#include <iterator>
+#include <QBitArray>
+#include "trainee.h"
 
 
 class FileManager
@@ -16,7 +19,18 @@ private:
     QByteArray finalFile;
     QList<Node*> list;
     bool treatNode();
-    QHash<unsigned char, QString> hash;
+    QHash<unsigned char, QBitArray> hash;
+
+    int lixo;
+
+    QString fileNameSav;
+    int nameSize;
+    QBitArray encodedNameSize;
+
+    QBitArray encodedFinalFile;
+    QBitArray encodedTrash;
+    QBitArray encodedTreeSize;
+
 public:
     FileManager();
     ~FileManager();
@@ -25,12 +39,25 @@ public:
     void charList();
     void encodeFile(Node *root);
     bool encodeFile(Node *cursor, unsigned char c, bool found);
+    void createHuffFile(QString encodedTree);
+
     int *getMarray() const;
     void setMarray(int *value);
     QByteArray getFinalFile() const;
     void setFinalFile(const QByteArray &value);
     QList<Node *> getList() const;
     void setList(const QList<Node *> &value);
+    void encodeCompleteFile(int treeSize);
+    QString getFileNameSav() const;
+    void setFileNameSav(const QString &value);
+    QBitArray getEncodedNameSize() const;
+    void setEncodedNameSize(const QBitArray &value);
+    QBitArray getEncodedFinalFile() const;
+    void setEncodedFinalFile(const QBitArray &value);
+    QBitArray getEncodedTrash() const;
+    void setEncodedTrash(const QBitArray &value);
+    QBitArray getEncodedTreeSize() const;
+    void setEncodedTreeSize(const QBitArray &value);
 };
 
 #endif // FILEMANAGER_H

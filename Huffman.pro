@@ -19,9 +19,11 @@ SOURCES += \
     filemanager.cpp \
     main.cpp \
     node.cpp \
-    environmentalist.cpp
+    environmentalist.cpp \
+    trainee.cpp
 
 HEADERS += \
     filemanager.h \
     node.h \
-    environmentalist.h
+    environmentalist.h \
+    trainee.h

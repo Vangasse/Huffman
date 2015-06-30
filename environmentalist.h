@@ -18,6 +18,8 @@ public:
     void encodeTree();
     Node *getRoot() const;
     void setRoot(Node *value);
+    QString getEncodedTree() const;
+    void setEncodedTree(const QString &value);
 };
 
 #endif // ENVIRONMENTALIST_H

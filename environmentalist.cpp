@@ -22,11 +22,21 @@ void Environmentalist::setRoot(Node *value)
 {
     root = value;
 }
+
+QString Environmentalist::getEncodedTree() const
+{
+    return encodedTree;
+}
+
+void Environmentalist::setEncodedTree(const QString &value)
+{
+    encodedTree = value;
+}
 Environmentalist::Environmentalist()
 {
     root = 0;
     cursor = 0;
-    encodedTree = "*";
+    encodedTree = "";
 }
 
 Environmentalist::~Environmentalist()
@@ -61,18 +71,45 @@ void Environmentalist::plantTree(QList<Node*> list){
 }
 
 void Environmentalist::encodeTree(Node *ncursor){
+    qDebug() << ncursor->getValue() << " " << ncursor->getNumber() << endl;
 
+    if(ncursor->getLeft()->isLeaf()){
+        if(ncursor->getLeft()->getValue() == '(')
+            encodedTree += "*(";
+        else if(ncursor->getLeft()->getValue() == '*')
+            encodedTree += "**";
+        else
+            encodedTree += ncursor->getLeft()->getValue();
+        qDebug() << ncursor->getLeft()->getValue() << " " << ncursor->getLeft()->getNumber() << endl;
+    }
+    else{
+        encodedTree += "(";
+        encodeTree(ncursor->getLeft());
+    }
+    if(ncursor->getRight()->isLeaf()){
+        if(ncursor->getRight()->getValue() == '(')
+            encodedTree += "*(";
+        else if(ncursor->getRight()->getValue() == '*')
+            encodedTree += "**";
+        else
+            encodedTree += ncursor->getRight()->getValue();
+            qDebug() << ncursor->getRight()->getValue() << " " << ncursor->getRight()->getNumber() << endl;
+    }
+    else{
+        encodedTree += "(";
+        encodeTree(ncursor->getRight());
+    }
 }
 
 void Environmentalist::encodeTree(){
-/*    cursor = root->getLeft();
-    if(cursor->isLeaf()){
-        encodedTree += cursor->getValue();
-    }
+    //Caractere identificador *
+    //Caractere de nó (
+
+
+    if(root->isLeaf())
+        encodedTree += root->getValue();
     else{
-        encodedTree += '*';
-        encodeTree(cursor);
+        encodedTree += "(";
+        encodeTree(root);
     }
-    cursor = root->getRight();
-*/
 }
