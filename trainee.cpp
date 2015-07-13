@@ -33,3 +33,35 @@ QByteArray Trainee::bitToByte(QBitArray work) //FUNÇAO DO MATHEUS
     }
     return results;
 }
+
+QBitArray Trainee::byteToBit(QByteArray work)
+{
+    QBitArray results;
+    results.resize(8*work.size());
+    int tam = (8*work.size()) - 1;
+    for(int i = work.size() - 1; i >= 0; i--)
+    {
+        int step = work.at(i);
+        while(step){
+            if(step % 2)
+                results.setBit(tam, true);
+            tam--;
+            step /= 2;
+        }
+    }
+    return results;
+}
+
+int Trainee::bitToDecimal(QBitArray work)
+{
+    int results = 0;
+
+    for(int i = 0; i < work.size(); i++)
+    {
+        if(work.at(i))
+            results = results*2 + 1;
+        else
+            results *= 2;
+    }
+    return results;
+}

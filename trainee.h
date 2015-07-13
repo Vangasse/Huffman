@@ -10,6 +10,8 @@ public:
     Trainee();
     ~Trainee();
     QByteArray bitToByte(QBitArray work);
+    QBitArray byteToBit(QByteArray work);
+    int bitToDecimal(QBitArray work);
 };
 
 #endif // TRAINEE_H

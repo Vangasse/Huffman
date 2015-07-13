@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include "filemanager.h"
 #include "environmentalist.h"
+#include "sourdough.h"
 #include <QDebug>
 
 int main(/*int argc, char *argv[]*/)
@@ -50,6 +51,11 @@ int main(/*int argc, char *argv[]*/)
     qDebug() << huffman->getEncodedFinalFile();
 
     huffman->createHuffFile(businesMan->getEncodedTree());
+
+    Sourdough *garimpeiro = new Sourdough();
+
+    garimpeiro->receiveFile("test.huff");
+    garimpeiro->deCoder();
 
     return 0;//app.exec();
 }

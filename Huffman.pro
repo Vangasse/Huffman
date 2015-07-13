@@ -20,10 +20,12 @@ SOURCES += \
     main.cpp \
     node.cpp \
     environmentalist.cpp \
-    trainee.cpp
+    trainee.cpp \
+    sourdough.cpp
 
 HEADERS += \
     filemanager.h \
     node.h \
     environmentalist.h \
-    trainee.h
+    trainee.h \
+    sourdough.h
