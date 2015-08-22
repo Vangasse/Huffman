@@ -10,52 +10,58 @@ int main(/*int argc, char *argv[]*/)
     FileManager *huffman = new FileManager();
 
     huffman->receiveFile("test.txt");
-    qDebug() << huffman->getFinalFile();
+//    qDebug() << huffman->getFinalFile();
 
-    int *array = huffman->getMarray();
-    for(int i = 0; i < 256; i++){
-        if(array[i] != 0)
-            qDebug() << array[i] << ' ' << i;
-    }
-
-    huffman->charList();
+//    int *array = huffman->getMarray();
+//    for(int i = 0; i < 256; i++){
+//        if(array[i] != 0)
+//            qDebug() << array[i] << ' ' << i;
+//    }
 
     QList<Node*> list = huffman->getList();
 
-    for(int i = 0; i < list.size(); i++){
-        qDebug() << list.at(i)->getValue();
-        qDebug() << list.at(i)->getNumber();
-    }
+//    for(int i = 0; i < list.size(); i++){
+//        qDebug() << list.at(i)->getValue();
+//        qDebug() << list.at(i)->getNumber();
+//    }
 
     Environmentalist *businesMan = new Environmentalist();
 
     businesMan->plantTree(list);
 
-    for(int i = 0; i < list.size(); i++){
-        qDebug() << list.at(i)->getValue() << ' ' << list.at(i)->getNumber();
-    }
+//    for(int i = 0; i < list.size(); i++){
+//        qDebug() << list.at(i)->getValue() << ' ' << list.at(i)->getNumber();
+//    }
 
     huffman->encodeFile(businesMan->getRoot());
     
+//    qDebug() << "TESTE ENCODE TREE" << endl;
     businesMan->encodeTree();
 
     qDebug() << businesMan->getEncodedTree() << endl;
 
     huffman->encodeCompleteFile(businesMan->getEncodedTree().size());
 
-    qDebug() << huffman->getEncodedTrash();
-    qDebug() << huffman->getEncodedTreeSize();
-    qDebug() << huffman->getEncodedNameSize();
-    qDebug() << huffman->getFileNameSav();
-    qDebug() << businesMan->getEncodedTree();
-    qDebug() << huffman->getEncodedFinalFile();
+//    qDebug() << huffman->getEncodedTrash();
+//    qDebug() << huffman->getEncodedTreeSize();
+//    qDebug() << huffman->getEncodedNameSize();
+//    qDebug() << huffman->getFileNameSav();
+//    qDebug() << businesMan->getEncodedTree();
+//    qDebug() << huffman->getEncodedFinalFile();
 
     huffman->createHuffFile(businesMan->getEncodedTree());
 
     Sourdough *garimpeiro = new Sourdough();
 
+    //DECOMPACTAÇÃO
+
     garimpeiro->receiveFile("test.huff");
     garimpeiro->deCoder();
+
+    businesMan->plantTree(garimpeiro->getEncodedTree());
+    //businesMan->encodeTree();
+    qDebug() << garimpeiro->getEncodedTree() << endl;
+    qDebug() << garimpeiro->getTrashSize();
 
     return 0;//app.exec();
 }

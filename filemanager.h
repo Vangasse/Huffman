@@ -10,6 +10,7 @@
 #include <iterator>
 #include <QBitArray>
 #include "trainee.h"
+#include "sourdough.h"
 
 
 class FileManager

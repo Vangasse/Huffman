@@ -31,6 +31,10 @@ public:
     ~Sourdough();
     void receiveFile(QString fileName);
     void deCoder();
+    QString getEncodedTree() const;
+    void setEncodedTree(const QString &value);
+    int getTrashSize() const;
+    void setTrashSize(int value);
 };
 
 #endif // SOURDOUGH_H

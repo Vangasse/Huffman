@@ -7,11 +7,13 @@ class Node
 {
 private:
     unsigned char value;
+    QString element;
     int number;
     Node *left;
     Node *right;
 public:
     Node(unsigned char value, int number);
+    Node(QString value);
     ~Node();
     bool isLeaf();
 

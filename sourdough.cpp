@@ -1,6 +1,26 @@
 #include "sourdough.h"
 #include <QDebug>
 
+
+QString Sourdough::getEncodedTree() const
+{
+    return encodedTree;
+}
+
+void Sourdough::setEncodedTree(const QString &value)
+{
+    encodedTree = value;
+}
+
+int Sourdough::getTrashSize() const
+{
+    return trashSize;
+}
+
+void Sourdough::setTrashSize(int value)
+{
+    trashSize = value;
+}
 Sourdough::Sourdough()
 {
     encodedFile = "";
@@ -69,6 +89,7 @@ void Sourdough::deCoder()
     }
 
     deGold = estagiario->byteToBit(eGold);
+    deGold.resize(deGold.size() - trashSize);
 
     //Pegando nome e arvore codificada
     for(int i = 3; i < 3 + nameSize + treeSize; i++)

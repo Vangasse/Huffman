@@ -48,6 +48,13 @@ Node::Node(unsigned char value, int number)
     this->right = 0;
 }
 
+Node::Node(QString element)
+{
+    this->element = element;
+    this->left = 0;
+    this->right = 0;
+}
+
 Node::~Node()
 {
 

@@ -10,10 +10,14 @@ private:
     Node* root;
     Node *cursor;
     QString encodedTree;
+
+    int indice;
 public:
     Environmentalist();
     ~Environmentalist();
     void plantTree(QList<Node*> list);
+    void plantTree(QString encodedTree);
+    void plantTreeRecall(QString encodedTree, bool galho, Node *pointer);
     void encodeTree(Node *ncursor);
     void encodeTree();
     Node *getRoot() const;

@@ -79,6 +79,7 @@ void FileManager::setEncodedTreeSize(const QBitArray &value)
 {
     encodedTreeSize = value;
 }
+
 FileManager::FileManager()
 {
     marray = new int[256];
@@ -105,6 +106,8 @@ void FileManager::receiveFile(QString fileName){
         finalFile += line;
     }
     file.close();
+
+    charList();
 }
 
 void FileManager::charFrequence(QByteArray line){
@@ -298,3 +301,4 @@ void FileManager::createHuffFile(QString encodedTree)
 
     huffFile.close();
 }
+
