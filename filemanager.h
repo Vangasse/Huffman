@@ -40,7 +40,8 @@ public:
     void charList();
     void encodeFile(Node *root);
     bool encodeFile(Node *cursor, unsigned char c, bool found);
-    void createHuffFile(QString encodedTree);
+    void createHuffFile(QByteArray encodedTree, QString ename);
+    void createDepressedFile(Node *root, QBitArray deGold, QString ename);
 
     int *getMarray() const;
     void setMarray(int *value);
@@ -59,6 +60,7 @@ public:
     void setEncodedTrash(const QBitArray &value);
     QBitArray getEncodedTreeSize() const;
     void setEncodedTreeSize(const QBitArray &value);
+    int getLixo() const;
 };
 
 #endif // FILEMANAGER_H

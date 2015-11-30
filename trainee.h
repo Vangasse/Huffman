@@ -11,6 +11,7 @@ public:
     ~Trainee();
     QByteArray bitToByte(QBitArray work);
     QBitArray byteToBit(QByteArray work);
+    QBitArray byteToBitZ(char byte);
     int bitToDecimal(QBitArray work);
 };
 

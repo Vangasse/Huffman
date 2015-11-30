@@ -80,6 +80,11 @@ void FileManager::setEncodedTreeSize(const QBitArray &value)
     encodedTreeSize = value;
 }
 
+int FileManager::getLixo() const
+{
+    return lixo;
+}
+
 FileManager::FileManager()
 {
     marray = new int[256];
@@ -124,6 +129,9 @@ void FileManager::charList(){
     for(int i = 0; i < 256; i++){
         if(marray[i] > 0){
             Node *aux = new Node(i,marray[i]);
+            QString asd;
+            asd = (char)i;
+            qDebug() << asd << marray[i];
             list.append(aux);
         }
     }
@@ -179,9 +187,9 @@ void FileManager::encodeFile(Node *root){
     for(int i = 0; i < list.size(); i++){
         unsigned char c = list.at(i)->getValue();
         encodeFile(root, c, false);
-        qDebug() << hash[c] << ' ' << c << ' ' << list.at(i)->getNumber();
+//        qDebug() << hash[c] << ' ' << c << ' ' << list.at(i)->getNumber();
     }
-    printTree(root);
+//    printTree(root);
 }
 
 void FileManager::encodeCompleteFile(int treeSize){
@@ -189,6 +197,7 @@ void FileManager::encodeCompleteFile(int treeSize){
     for(QByteArray::iterator it = finalFile.begin(); it != finalFile.end(); it++)
     {
         int array_size = hash[*it].size();
+        qDebug() << hash[*it];
         for(int i = 0; i < array_size; i++)
         {
             encodedFinalFile.resize(encodedFinalFile.size() + 1);
@@ -272,14 +281,14 @@ void FileManager::encodeCompleteFile(int treeSize){
 
 }
 
-void FileManager::createHuffFile(QString encodedTree)
+void FileManager::createHuffFile(QByteArray encodedTree, QString ename)
 {
-    QFile huffFile("test.huff");
+    QFile huffFile(ename);
     Trainee jefferson;
 
     huffFile.open(QIODevice::WriteOnly);
 
-    QTextStream out(&huffFile);
+//    QTextStream out(&huffFile); //PROBLEMA SERIO ISSO
 
     QBitArray aux;
 
@@ -292,13 +301,62 @@ void FileManager::createHuffFile(QString encodedTree)
             aux.setBit(aux.size() - 1, true);
     }
 
-    qDebug() << aux;
+//    qDebug() << aux;
 
-    out << jefferson.bitToByte(aux);
-    out << jefferson.bitToByte(encodedNameSize);
-    out << fileNameSav << encodedTree;
-    out << jefferson.bitToByte(encodedFinalFile);
+    QByteArray total("");
+
+    total.append(jefferson.bitToByte(aux));
+    total.append(jefferson.bitToByte(encodedNameSize));
+    total.append(fileNameSav);
+    total.append(encodedTree);
+    total.append(jefferson.bitToByte(encodedFinalFile));
+
+    huffFile.write(total);
 
     huffFile.close();
+
+//    QByteArray teste;
+//    teste = jefferson.bitToByte(encodedFinalFile);
+//    qDebug() << encodedFinalFile;
+//    qDebug() << jefferson.byteToBit(teste);
 }
 
+void FileManager::createDepressedFile(Node* root, QBitArray deGold, QString ename)
+{
+
+    QFile depressedFile(ename);
+
+    depressedFile.open(QIODevice::WriteOnly);
+
+    Node* cursor;
+    cursor = root;
+    QByteArray out = "";
+
+    if(cursor->isLeaf())
+    {
+//            qDebug() << deGold.at(i) << i << cursor->getElement();
+        out += cursor->getElement();
+        cursor = root;
+    }
+
+    for(int i = 0; i < deGold.size(); i++)
+    {
+        if(deGold.at(i))
+        {
+//            qDebug() << deGold.at(i) << i << deGold.size();
+            cursor = cursor->getRight();
+        }
+        else
+        {
+//            qDebug() << deGold.at(i) << i << deGold.size();
+            cursor = cursor->getLeft();
+        }
+        if(cursor->isLeaf())
+        {
+//            qDebug() << deGold.at(i) << i << cursor->getElement();
+            out += cursor->getElement();
+            cursor = root;
+        }
+    }
+    depressedFile.write(out);
+}

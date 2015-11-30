@@ -38,18 +38,37 @@ QBitArray Trainee::byteToBit(QByteArray work)
 {
     QBitArray results;
     results.resize(8*work.size());
-    int tam = (8*work.size()) - 1;
-    for(int i = work.size() - 1; i >= 0; i--)
+    for(int i = 0; i < work.size(); i++)
     {
-        int step = work.at(i);
-        while(step){
-            if(step % 2)
-                results.setBit(tam, true);
-            tam--;
-            step /= 2;
-        }
+        QBitArray bit(8);
+        char byte;
+        byte = work.at(i);
+        bit = byteToBitZ(byte);
+        results.setBit(i*8 + 0, bit.at(7));
+        results.setBit(i*8 + 1, bit.at(6));
+        results.setBit(i*8 + 2, bit.at(5));
+        results.setBit(i*8 + 3, bit.at(4));
+        results.setBit(i*8 + 4, bit.at(3));
+        results.setBit(i*8 + 5, bit.at(2));
+        results.setBit(i*8 + 6, bit.at(1));
+        results.setBit(i*8 + 7, bit.at(0));
     }
     return results;
+}
+
+QBitArray Trainee::byteToBitZ(char byte){
+    QBitArray bit(8);
+
+    bit.setBit(7, 0x80&byte);
+    bit.setBit(6, 0x40&byte);
+    bit.setBit(5, 0x20&byte);
+    bit.setBit(4, 0x10&byte);
+    bit.setBit(3, 0x08&byte);
+    bit.setBit(2, 0x04&byte);
+    bit.setBit(1, 0x02&byte);
+    bit.setBit(0, 0x01&byte);
+//    qDebug() << bool(0x80&byte);
+    return bit;
 }
 
 int Trainee::bitToDecimal(QBitArray work)

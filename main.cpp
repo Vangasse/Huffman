@@ -1,67 +1,64 @@
-#include <QCoreApplication>
-#include "filemanager.h"
-#include "environmentalist.h"
-#include "sourdough.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
+#include "link.h"
 #include <QDebug>
 
-int main(/*int argc, char *argv[]*/)
+int main(int argc, char *argv[])
 {
-    //QCoreApplication app(argc, argv);
-    FileManager *huffman = new FileManager();
+    QGuiApplication app(argc, argv);
+    QGuiApplication::setApplicationName("Huffman");
+    QGuiApplication::setApplicationVersion("A ULTIMA");
 
-    huffman->receiveFile("test.txt");
-//    qDebug() << huffman->getFinalFile();
+    QQmlApplicationEngine engine;
+    QQmlContext *interpreter = engine.rootContext();
 
-//    int *array = huffman->getMarray();
-//    for(int i = 0; i < 256; i++){
-//        if(array[i] != 0)
-//            qDebug() << array[i] << ' ' << i;
-//    }
+    QCommandLineParser parser;
 
-    QList<Node*> list = huffman->getList();
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.setApplicationDescription("Parser significa analisador");
+    parser.addPositionalArgument("file.x", QCoreApplication::translate("main", "original file"));
+    parser.addPositionalArgument("file.huff", QCoreApplication::translate("main", "final file"));
+    parser.addPositionalArgument("local", QCoreApplication::translate("main", "final adress"));
 
-//    for(int i = 0; i < list.size(); i++){
-//        qDebug() << list.at(i)->getValue();
-//        qDebug() << list.at(i)->getNumber();
-//    }
+    QCommandLineOption compress("c",QCoreApplication::translate("main","compress file.x."),
+                                QCoreApplication::translate("main","file.x"));
+    parser.addOption(compress);
+    QCommandLineOption out("o",QCoreApplication::translate("main","save as file.huff."),
+                               QCoreApplication::translate("main","file.huff"));
+    parser.addOption(out);
+    QCommandLineOption local("d",QCoreApplication::translate("main","put it in local."),
+                             QCoreApplication::translate("main","local"));
+    parser.addOption(local);
+    QCommandLineOption startGui("gui", QCoreApplication::translate("main", "start gui."));
+    parser.addOption(startGui);
+    parser.process(app);
 
-    Environmentalist *businesMan = new Environmentalist();
+    Link huff(&app);
 
-    businesMan->plantTree(list);
+    if(parser.isSet(compress))
+        {
+            huff.startCompression(parser.value(compress), parser.value(out));
+            exit(0);
+        }
+        else if(parser.isSet(startGui))
+        {
+            interpreter->setContextProperty("_huffman", &huff);
+            engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+        }
+        else
+        {
+            if(app.arguments().size() == 1)
+                    qDebug() << qPrintable(parser.helpText());
+                else if(parser.isSet(local))
+                    huff.startDeCom(app.arguments().at(1),parser.value(local));
+                else
+                    huff.startDeCom(app.arguments().at(1));
+        }
 
-//    for(int i = 0; i < list.size(); i++){
-//        qDebug() << list.at(i)->getValue() << ' ' << list.at(i)->getNumber();
-//    }
-
-    huffman->encodeFile(businesMan->getRoot());
-    
-//    qDebug() << "TESTE ENCODE TREE" << endl;
-    businesMan->encodeTree();
-
-    qDebug() << businesMan->getEncodedTree() << endl;
-
-    huffman->encodeCompleteFile(businesMan->getEncodedTree().size());
-
-//    qDebug() << huffman->getEncodedTrash();
-//    qDebug() << huffman->getEncodedTreeSize();
-//    qDebug() << huffman->getEncodedNameSize();
-//    qDebug() << huffman->getFileNameSav();
-//    qDebug() << businesMan->getEncodedTree();
-//    qDebug() << huffman->getEncodedFinalFile();
-
-    huffman->createHuffFile(businesMan->getEncodedTree());
-
-    Sourdough *garimpeiro = new Sourdough();
-
-    //DECOMPACTAÇÃO
-
-    garimpeiro->receiveFile("test.huff");
-    garimpeiro->deCoder();
-
-    businesMan->plantTree(garimpeiro->getEncodedTree());
-    //businesMan->encodeTree();
-    qDebug() << garimpeiro->getEncodedTree() << endl;
-    qDebug() << garimpeiro->getTrashSize();
-
-    return 0;//app.exec();
+    return app.exec();
 }
+

@@ -9,21 +9,21 @@ class Environmentalist
 private:
     Node* root;
     Node *cursor;
-    QString encodedTree;
+    QByteArray encodedTree;
 
     int indice;
 public:
     Environmentalist();
     ~Environmentalist();
     void plantTree(QList<Node*> list);
-    void plantTree(QString encodedTree);
-    void plantTreeRecall(QString encodedTree, bool galho, Node *pointer);
+    void plantTree(QByteArray encodedTree);
+    void plantTreeRecall(QByteArray &encodedTree, Node *pointer);
     void encodeTree(Node *ncursor);
     void encodeTree();
     Node *getRoot() const;
     void setRoot(Node *value);
-    QString getEncodedTree() const;
-    void setEncodedTree(const QString &value);
+    QByteArray getEncodedTree() const;
+    void setEncodedTree(const QByteArray &value);
 };
 
 #endif // ENVIRONMENTALIST_H

@@ -11,6 +11,16 @@ void Node::setValue(unsigned char value)
     this->value = value;
 }
 
+QByteArray Node::getElement() const
+{
+    return element;
+}
+
+void Node::setElement(QByteArray element)
+{
+    this->element = element;
+}
+
 int Node::getNumber() const
 {
     return number;
@@ -48,7 +58,7 @@ Node::Node(unsigned char value, int number)
     this->right = 0;
 }
 
-Node::Node(QString element)
+Node::Node(QByteArray element)
 {
     this->element = element;
     this->left = 0;

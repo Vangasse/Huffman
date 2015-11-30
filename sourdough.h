@@ -20,7 +20,7 @@ private:
     QBitArray deGold;
 
     QString name;
-    QString encodedTree;
+    QByteArray encodedTree;
 
     int trashSize;
     int treeSize;
@@ -31,10 +31,14 @@ public:
     ~Sourdough();
     void receiveFile(QString fileName);
     void deCoder();
-    QString getEncodedTree() const;
-    void setEncodedTree(const QString &value);
+    QByteArray getEncodedTree() const;
+    void setEncodedTree(const QByteArray &value);
     int getTrashSize() const;
     void setTrashSize(int value);
+    QBitArray getDeGold() const;
+
+    QString getName() const;
+    void setName(const QString &value);
 };
 
 #endif // SOURDOUGH_H

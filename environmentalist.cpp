@@ -1,4 +1,5 @@
 #include "environmentalist.h"
+#include <QStack>
 
 bool lessThan(Node *a, Node *b){
     bool min;
@@ -23,12 +24,12 @@ void Environmentalist::setRoot(Node *value)
     root = value;
 }
 
-QString Environmentalist::getEncodedTree() const
+QByteArray Environmentalist::getEncodedTree() const
 {
     return encodedTree;
 }
 
-void Environmentalist::setEncodedTree(const QString &value)
+void Environmentalist::setEncodedTree(const QByteArray &value)
 {
     encodedTree = value;
 }
@@ -70,90 +71,63 @@ void Environmentalist::plantTree(QList<Node*> list){
 
 }
 
-void Environmentalist::plantTree(QString encodedTree){
-    root = 0;
-    Node *pointer;
-    indice = 1;
-
+void Environmentalist::plantTree(QByteArray encodedTree){
+    Node *newRoot = new Node("");
+    root = newRoot;
 
     if(encodedTree.at(0) == '(')
     {
-        Node *newborn = new Node("");
-        pointer = newborn;
-        root = newborn;
-        plantTreeRecall(encodedTree, false, pointer);
+        Node *newLeft = new Node("");
+        Node *newRight = new Node("");
+        newRoot->setLeft(newLeft);
+        newRoot->setRight(newRight);
+        encodedTree.remove(0,1);
+        plantTreeRecall(encodedTree, newLeft);
+        encodedTree.remove(0,1);
+        plantTreeRecall(encodedTree, newRight);
     }
     else if(encodedTree.at(0) == '*')
     {
-        Node *newborn = new Node( encodedTree.at(1));
-        root = newborn;
+        QByteArray aux;
+        aux.append(encodedTree.at(1));
+        newRoot->setElement(aux);
+        encodedTree.remove(0,1);
     }
     else
     {
-        Node *newborn = new Node(encodedTree.at(0));
-        root = newborn;
-    }
+        QByteArray aux;
+        aux.append(encodedTree.at(0));
 
+        newRoot->setElement(aux);
+    }
 }
 
-void Environmentalist::plantTreeRecall(QString encodedTree, bool galho, Node *pointer)
+void Environmentalist::plantTreeRecall(QByteArray &encodedTree, Node *pointer)
 {
-
-       if(encodedTree.at(indice) == '(')
-       {
-           Node *newborn = new Node("");
-
-           if(!galho)
-           {
-               pointer->setLeft(newborn);
-           }
-           else
-           {
-               pointer->setRight(newborn);
-           }
-
-           indice++;
-           plantTreeRecall(encodedTree, false, newborn);
-
-       }
-       else if(encodedTree.at(indice) == '*')
-       {
-           indice++;
-           Node *newborn = new Node(encodedTree.at(indice));
-
-           if(!galho)
-           {
-               pointer->setLeft(newborn);
-               if(indice + 1 < encodedTree.size())
-               {
-                   indice++;
-                   plantTreeRecall(encodedTree, true, pointer);
-               }
-           }
-           else
-           {
-               pointer->setRight(newborn);
-           }
-       }
-       else
-       {
-           Node *newborn = new Node(encodedTree.at(indice));
-
-           if(!galho)
-           {
-               pointer->setLeft(newborn);
-               if(indice + 1 < encodedTree.size())
-               {
-                   indice++;
-                   plantTreeRecall(encodedTree, true, pointer);
-               }
-           }
-           else
-           {
-               pointer->setRight(newborn);
-           }
-       }
-
+    if(encodedTree.at(0) == '(')
+    {
+        Node *newLeft = new Node("");
+        Node *newRight = new Node("");
+        pointer->setLeft(newLeft);
+        pointer->setRight(newRight);
+        encodedTree.remove(0,1);
+        plantTreeRecall(encodedTree, pointer->getLeft());
+        encodedTree.remove(0,1);
+        plantTreeRecall(encodedTree, pointer->getRight());
+    }
+    else if(encodedTree.at(0) == '*')
+    {
+        QByteArray aux;
+        aux.append(encodedTree.at(1));
+        pointer->setElement(aux);
+        encodedTree.remove(0,1);
+    }
+    else
+    {
+        QByteArray aux;
+        aux.append(encodedTree.at(0));
+        pointer->setElement(aux);
+    }
 }
 
 void Environmentalist::encodeTree(Node *ncursor){
@@ -195,6 +169,7 @@ void Environmentalist::encodeTree(){
     if(root->isLeaf())
         encodedTree += root->getValue();
     else{
+        encodedTree += "(";
         encodeTree(root);
     }
 }
